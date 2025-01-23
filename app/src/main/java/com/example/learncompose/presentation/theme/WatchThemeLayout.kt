@@ -7,13 +7,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 
+/*The following classes are interfaces. AppColors, for example, represents a
+* palette of 5 colors. A lighter palette vs a darker palette would have their respective 5 colors*/
+
 data class AppColors (
     val background: Color,
     val onBackground: Color,
     val primary: Color,
-    val onPrimary: Color,
     val secondary: Color,
-    val onSecondary: Color,
+    val tertiary: Color,
 )
 
 data class AppTypography (
@@ -37,20 +39,20 @@ data class AppSize (
     val small: Dp
 )
 
-//Provide a way to pass properties of design system into composition
+/*Without these, we would have to pass our (color scheme, typography, etc) to each
+* component that requires it. Here's just a global way of doing that. */
 
-val DefColorScheme = staticCompositionLocalOf {
+val LocalColorScheme = staticCompositionLocalOf {
     AppColors(
         background =  Color.Unspecified,
         onBackground = Color.Unspecified,
         primary=  Color.Unspecified,
-        onPrimary=  Color.Unspecified,
         secondary=  Color.Unspecified,
-        onSecondary=  Color.Unspecified
+        tertiary =  Color.Unspecified
     )
 }
 
-val DefTypography = staticCompositionLocalOf {
+val LocalTypography = staticCompositionLocalOf {
     AppTypography(
         titleLarge = TextStyle.Default,
         titleNormal = TextStyle.Default,
@@ -61,14 +63,14 @@ val DefTypography = staticCompositionLocalOf {
     )
 }
 
-val DefShape = staticCompositionLocalOf {
+val LocalShape = staticCompositionLocalOf {
     AppShape (
         container = RectangleShape,
         button = RectangleShape
     )
 }
 
-val DefSize = staticCompositionLocalOf {
+val LocalSize = staticCompositionLocalOf {
     AppSize (
         large = Dp.Unspecified,
         medium = Dp.Unspecified,

@@ -9,3 +9,7 @@ import com.example.learncompose.R
 val Gantari = FontFamily(
     Font(R.font.gantari_regular, FontWeight.Normal)
 )
+
+val Roboto = FontFamily(
+    Font(R.font.roboto_condensed, FontWeight.Normal)
+)
