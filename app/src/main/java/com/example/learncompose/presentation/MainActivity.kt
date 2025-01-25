@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
@@ -34,16 +37,19 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-        setTheme(android.R.style.Theme_DeviceDefault)
+
 
         setContent {
-            WearApp("Android")
+            val viewModel: HeartRateViewModel = viewModel()
+            val heartRate by viewModel.heartRate.collectAsStateWithLifecycle()
+
+            WearApp(heartRate)
         }
     }
 }
 
 @Composable
-fun WearApp(greetingName: String) {
+fun WearApp(heartRate: Int) {
     WatchTheme {
         Box(
             modifier = Modifier
@@ -51,8 +57,9 @@ fun WearApp(greetingName: String) {
                 .background(WatchTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
-            TimeText()
-            Greeting(greetingName = greetingName)
+            Text(
+                text = "Heart Rate $heartRate"
+            )
         }
     }
 }
@@ -63,7 +70,7 @@ fun Greeting(greetingName: String) {
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         fontSize = 20.sp,
-        color = WatchTheme.colorScheme.onPrimary,
+        color = WatchTheme.colorScheme.primary,
         text = stringResource(R.string.hello_world, greetingName)
     )
 }
@@ -71,5 +78,5 @@ fun Greeting(greetingName: String) {
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 fun DefaultPreview() {
-    WearApp("Musa")
+    WearApp(9)
 }
