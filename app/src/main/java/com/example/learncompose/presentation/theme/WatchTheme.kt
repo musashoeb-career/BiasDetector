@@ -77,7 +77,7 @@ fun WatchTheme (
     isDarkTheme : Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+    val colorScheme =  DarkColorScheme
     CompositionLocalProvider(
         LocalColorScheme provides colorScheme,
         LocalTypography provides typography,
