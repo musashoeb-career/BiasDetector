@@ -6,8 +6,11 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Text
 import com.samsung.android.service.health.tracking.ConnectionListener
 import com.samsung.android.service.health.tracking.HealthTracker
 import com.samsung.android.service.health.tracking.HealthTrackerException
@@ -110,8 +113,6 @@ class SamsungHealthConnect(private val context: Context){
 
 
 }
-
-
 
 
 

@@ -11,11 +11,11 @@ import androidx.compose.ui.unit.dp
 
 
 private val LightColorScheme = AppColors (
-    background = OffWhite,
-    onBackground = SuperiorBlue,
-    primary = YiminBlue,
-    secondary = SkyBlue,
-    tertiary = BattleGrey,
+    background = DirtyBlue,
+    onBackground = DenimBlue,
+    primary = OffWhite,
+    secondary = YiminBlue,
+    tertiary = SkyBlue,
 )
 
 private val DarkColorScheme = AppColors (
@@ -28,34 +28,34 @@ private val DarkColorScheme = AppColors (
 
 private val typography = AppTypography(
     titleLarge = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Jura,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp
     ),
     titleNormal = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Jura,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 16.sp
     ),
     body = TextStyle(
-        fontFamily = Gantari,
+        fontFamily = Jura,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 12.sp
     ),
     labelLarge = TextStyle(
-        fontFamily = Gantari,
+        fontFamily = Jura,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
+        fontSize = 16.sp
     ),
     labelNormal = TextStyle(
         fontFamily = Gantari,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 12.sp
     ),
     labelSmall = TextStyle(
         fontFamily = Gantari,
         fontWeight = FontWeight.Thin,
-        fontSize = 24.sp
+        fontSize = 8.sp
     ),
 
 )
@@ -77,7 +77,7 @@ fun WatchTheme (
     isDarkTheme : Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme =  DarkColorScheme
+    val colorScheme =  LightColorScheme
     CompositionLocalProvider(
         LocalColorScheme provides colorScheme,
         LocalTypography provides typography,

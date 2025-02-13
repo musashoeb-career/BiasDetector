@@ -21,5 +21,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LearnCompose"
+rootProject.name = "BiasDetectorWatch"
 include(":app")

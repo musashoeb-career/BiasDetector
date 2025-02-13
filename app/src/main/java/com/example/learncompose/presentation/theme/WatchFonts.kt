@@ -13,3 +13,7 @@ val Gantari = FontFamily(
 val Roboto = FontFamily(
     Font(R.font.roboto_condensed, FontWeight.Normal)
 )
+
+val Jura = FontFamily(
+    Font(R.font.jura_regular, FontWeight.Normal),
+)
