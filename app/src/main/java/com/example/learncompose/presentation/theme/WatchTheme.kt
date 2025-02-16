@@ -15,7 +15,7 @@ private val LightColorScheme = AppColors (
     onBackground = DenimBlue,
     primary = OffWhite,
     secondary = YiminBlue,
-    tertiary = SkyBlue,
+    tertiary = SubmitGreen,
 )
 
 private val DarkColorScheme = AppColors (
