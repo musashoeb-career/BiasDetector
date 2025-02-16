@@ -29,7 +29,7 @@
             android:value="true" />
 
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.Oxymeter.OxymeterActivity"
             android:exported="true"
             android:taskAffinity=""
             android:theme="@style/MainActivityTheme.Starting">
@@ -40,7 +40,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.OxymeterActivity">
+        <activity android:name=".presentation.MainActivity"
+            android:taskAffinity="">
             <!-- Add other necessary properties if needed -->
         </activity>
 
