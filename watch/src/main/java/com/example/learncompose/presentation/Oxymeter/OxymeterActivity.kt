@@ -1,6 +1,7 @@
 package com.example.learncompose.presentation.Oxymeter
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.wear.compose.material.ButtonDefaults
+import com.example.learncompose.presentation.HeartRateRecord.HeartRateActivity
 import com.example.learncompose.presentation.SamsungHealthConnect
 import com.example.learncompose.presentation.theme.Jura
 import com.example.learncompose.presentation.theme.WatchTheme
@@ -43,6 +45,10 @@ class OxymeterActivity : ComponentActivity() {
 
     private val viewModel: OxymeterViewModel by viewModels()
 
+    private fun navigateHeartRate() {
+        val intent = Intent(this, HeartRateActivity::class.java)
+        startActivity(intent)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,7 +70,11 @@ class OxymeterActivity : ComponentActivity() {
                     onStopTestClick = {
                         viewModel.stopTest()
                     },
-                    sp02Level = sp02Level
+                    sp02Level = sp02Level,
+
+                    onNavigateHeartRate = {
+                        navigateHeartRate()
+                    }
                 )
             }
         }
@@ -72,7 +82,7 @@ class OxymeterActivity : ComponentActivity() {
 }
 
 @Composable
-fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02Level: Int) {
+fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02Level: Int, onNavigateHeartRate: () -> Unit) {
 
 
     Column (
@@ -91,7 +101,6 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
                 color = WatchTheme.colorScheme.primary
             ))
 
-        Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "$sp02Level %",
              style = TextStyle(
@@ -100,7 +109,6 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
                  color = WatchTheme.colorScheme.primary
              ))
 
-        Spacer(modifier = Modifier.height(16.dp))
 
         androidx.wear.compose.material.Button(
             onClick = {
@@ -122,24 +130,43 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
             )
         }
 
-        Spacer(Modifier.padding())
-
-        androidx.wear.compose.material.Button(
-            onClick = { onStopTestClick() },
-            modifier = Modifier
-                .padding(2.dp)
-                .fillMaxWidth(0.4f)
-                .height(30.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.tertiary)
-        ) {
-            Text(
-                "Continue",
-                style = TextStyle(
-                    fontFamily = Jura,
-                    fontSize = 15.sp,
-                    color = WatchTheme.colorScheme.primary
+        Row {
+            androidx.wear.compose.material.Button(
+                onClick = { onStopTestClick() },
+                modifier = Modifier
+                    .padding(2.dp)
+                    .fillMaxWidth(0.4f)
+                    .height(30.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
+            ) {
+                Text(
+                    "Complete",
+                    style = TextStyle(
+                        fontFamily = Jura,
+                        fontSize = 15.sp,
+                        color = WatchTheme.colorScheme.primary
+                    )
                 )
-            )
+            }
+
+            androidx.wear.compose.material.Button(
+                onClick = { onNavigateHeartRate() },
+                modifier = Modifier
+                    .padding(2.dp)
+                    .fillMaxWidth(0.4f)
+                    .height(30.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.tertiary)
+            ) {
+                Text(
+                    "->",
+                    style = TextStyle(
+                        fontFamily = Jura,
+                        fontSize = 15.sp,
+                        color = WatchTheme.colorScheme.primary
+                    )
+                )
+            }
         }
+
     }
 }

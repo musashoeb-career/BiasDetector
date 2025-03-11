@@ -1,4 +1,4 @@
-package com.example.learncompose.presentation
+package com.example.learncompose.presentation.HeartRateRecord
 
 import android.util.Log
 import com.samsung.android.service.health.tracking.HealthTracker
@@ -21,8 +21,8 @@ class HeartRateListenerService() {
             val incomingHeartRate = dataPoints.mapNotNull {
                 DataPoint -> DataPoint.getValue((ValueKey.HeartRateSet.HEART_RATE))
             }
-            _heartRateData.value = incomingHeartRate
-            Log.d("Heart Rate Listener", "Data Received: $_heartRateData")
+            _heartRateData.value += incomingHeartRate
+            Log.d("Heart Rate Listener", "Data Received: $incomingHeartRate")
         }
 
         override fun onError(p0: HealthTracker.TrackerError?) {

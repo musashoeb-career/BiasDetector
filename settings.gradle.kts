@@ -21,5 +21,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BiasDetectorWatch"
-include(":app")
+rootProject.name = "BiasDetectorProject"
+include(":watch")

@@ -16,26 +16,9 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.delay
 
 class OxymeterViewModel(application: Application) : AndroidViewModel(application) {
+
     val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef : DatabaseReference = database.getReference("users/names")
-
-    fun ReadDatabase() {
-
-        // Read from the database
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called when data is retrieved from the database
-                val value = dataSnapshot.getValue(String::class.java)
-                Log.d("Firebase", "Value is: $value")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // This method is called when the read operation is cancelled
-                Log.w("Firebase", "Failed to read value.", databaseError.toException())
-            }
-    })
-    }
-
+    val myRef : DatabaseReference = database.getReference("users/names/sp02")
     val healthConnect = SamsungHealthConnect(application)
     val sp02Listener = OxygenListenerService()
 
@@ -55,7 +38,7 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
 
     fun stopTest() {
         val spo2Final = sp02Listener.sp02Data.value
-        myRef.setValue(spo2Final)
+        myRef.setValue("Oxygen Value:$spo2Final")
         healthConnect.sp02Tracker.unsetEventListener()
         healthConnect.disconnectHealthService()
     }

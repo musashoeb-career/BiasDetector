@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
 
@@ -45,6 +46,10 @@
             <!-- Add other necessary properties if needed -->
         </activity>
 
+        <activity android:name=".presentation.HeartRateRecord.HeartRateActivity"
+            android:taskAffinity="">
+            <!-- Add other necessary properties if needed -->
+        </activity>
     </application>
 
 </manifest>
