@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 
 class OxymeterActivity : ComponentActivity() {
 
+
     private val viewModel: OxymeterViewModel by viewModels()
 
     private fun navigateHeartRate() {
@@ -52,6 +53,12 @@ class OxymeterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val employeeID = intent.getStringExtra("EMPLOYEEID")
+
+
+        if (employeeID != null) {
+            viewModel.updateReference(employeeID)
+        }
         if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACTIVITY_RECOGNITION)
             == PackageManager.PERMISSION_DENIED) {
             requestPermissions(arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), 0)

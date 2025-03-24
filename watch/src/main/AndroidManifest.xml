@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
 
     <uses-feature android:name="android.hardware.type.watch" />
@@ -29,7 +31,7 @@
             android:value="true" />
 
         <activity
-            android:name=".presentation.Oxymeter.OxymeterActivity"
+            android:name=".presentation.LoginSetup.SelectUserActivity"
             android:exported="true"
             android:taskAffinity=""
             android:theme="@style/MainActivityTheme.Starting">
@@ -40,7 +42,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.LoginActivity"
+        <activity android:name=".presentation.LoginSetup.LoginActivity"
+            android:taskAffinity="">
+            <!-- Add other necessary properties if needed -->
+        </activity>
+
+        <activity android:name=".presentation.Oxymeter.OxymeterActivity"
             android:taskAffinity="">
             <!-- Add other necessary properties if needed -->
         </activity>

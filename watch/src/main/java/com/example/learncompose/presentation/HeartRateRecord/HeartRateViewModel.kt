@@ -83,7 +83,7 @@ class HeartRateViewModel(application: Application) : AndroidViewModel(applicatio
             //voiceRecorder.startRecording()
             healthConnect.connectHealthService()
 
-            delay(2000)
+            delay(1000)
             if(healthConnect.isConnected) {
 
                 healthConnect.heartRateTracker.setEventListener(heartRateListener.heartRateListener)

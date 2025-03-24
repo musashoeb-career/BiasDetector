@@ -18,15 +18,39 @@ import kotlinx.coroutines.delay
 class OxymeterViewModel(application: Application) : AndroidViewModel(application) {
 
     val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-    val myRef : DatabaseReference = database.getReference("users/names/sp02")
+    var myRef : DatabaseReference = database.getReference("")
     val healthConnect = SamsungHealthConnect(application)
     val sp02Listener = OxygenListenerService()
+
+
+    fun updateReference( employeeID: String) {
+        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID")
+        myRef.orderByKey().limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()) {
+                        // Get the last child (most recent node)
+                        val mostRecentNode = snapshot.children.first()
+                       Log.d("Most Recent Node:", "Node: $mostRecentNode")
+                        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/$mostRecentNode")
+                       // myRef.setValue("Testing Oxygen Value")
+                    } else {
+                        Log.d("Most Recent Node:", "No Node Found")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle error appropriately, e.g., log it or display a message
+                   Log.d("Error", "Error Retrieving Child Node")
+                }
+            })
+    }
 
     suspend fun startTest() {
 
         healthConnect.connectHealthService()
 
-        delay(2000)
+        delay(1000)
         if(healthConnect.isConnected) {
 
             healthConnect.sp02Tracker.setEventListener(sp02Listener.sp02Listener)
