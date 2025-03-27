@@ -58,6 +58,7 @@ class HeartRateViewModel(application: Application) : AndroidViewModel(applicatio
 
         suspend fun startTest() {
 
+            heartRateListener._heartRateData.value = emptyList()
 
             //voiceRecorder.startRecording()
             healthConnect.connectHealthService()

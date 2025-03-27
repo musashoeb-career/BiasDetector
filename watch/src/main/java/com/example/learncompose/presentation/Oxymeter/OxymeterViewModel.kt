@@ -2,6 +2,7 @@ package com.example.learncompose.presentation.Oxymeter
 
 import android.app.Application
 import android.util.Log
+import androidx.collection.emptyIntList
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,6 +51,7 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun startTest() {
 
+        sp02Listener._sp02Data.value = 0
         healthConnect.connectHealthService()
 
         delay(1000)

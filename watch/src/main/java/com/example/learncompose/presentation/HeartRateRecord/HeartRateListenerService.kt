@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class HeartRateListenerService() {
 
-    private val _heartRateData = MutableStateFlow<List<Int>>(emptyList())
+    val _heartRateData = MutableStateFlow<List<Int>>(emptyList())
     val heartRateData = _heartRateData.asStateFlow()
 
      val heartRateListener = object : HealthTracker.TrackerEventListener {
