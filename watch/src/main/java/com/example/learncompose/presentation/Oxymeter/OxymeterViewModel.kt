@@ -23,17 +23,19 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
     val sp02Listener = OxygenListenerService()
 
 
+
+
     fun updateReference( employeeID: String) {
-        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID")
-        myRef.orderByKey().limitToFirst(1)
+        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests")
+        myRef.orderByKey().limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.hasChildren()) {
                         // Get the last child (most recent node)
-                        val mostRecentNode = snapshot.children.first()
+                        val mostRecentNode = snapshot.children.last()
                        Log.d("Most Recent Node:", "Node: $mostRecentNode")
-                        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/$mostRecentNode")
-                       // myRef.setValue("Testing Oxygen Value")
+                        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests/${mostRecentNode.key}/sp02")
+                        Log.d("Node Path", "EHTS/EHTS2025/employees/$employeeID/tests/${mostRecentNode.key}")
                     } else {
                         Log.d("Most Recent Node:", "No Node Found")
                     }
@@ -52,7 +54,6 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
 
         delay(1000)
         if(healthConnect.isConnected) {
-
             healthConnect.sp02Tracker.setEventListener(sp02Listener.sp02Listener)
 
         }
@@ -62,7 +63,16 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
 
     fun stopTest() {
         val spo2Final = sp02Listener.sp02Data.value
-        myRef.setValue("Oxygen Value:$spo2Final")
+        Log.d("Sp02 Final", "Data: $spo2Final")
+        myRef.setValue(spo2Final).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Oxymeter Push", "Successful Oxi Push")
+            }
+            else {
+                Log.d("Oxymeter Push", "Bad Oxi Push")
+            }
+        }
+
         healthConnect.sp02Tracker.unsetEventListener()
         healthConnect.disconnectHealthService()
     }

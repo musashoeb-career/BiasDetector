@@ -17,18 +17,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.wear.compose.material.ButtonDefaults
+import com.example.learncompose.R
 import com.example.learncompose.presentation.HeartRateRecord.HeartRateActivity
 import com.example.learncompose.presentation.SamsungHealthConnect
 import com.example.learncompose.presentation.theme.Jura
@@ -46,15 +55,11 @@ class OxymeterActivity : ComponentActivity() {
 
     private val viewModel: OxymeterViewModel by viewModels()
 
-    private fun navigateHeartRate() {
-        val intent = Intent(this, HeartRateActivity::class.java)
-        startActivity(intent)
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val employeeID = intent.getStringExtra("EMPLOYEEID")
-
 
         if (employeeID != null) {
             viewModel.updateReference(employeeID)
@@ -62,6 +67,12 @@ class OxymeterActivity : ComponentActivity() {
         if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACTIVITY_RECOGNITION)
             == PackageManager.PERMISSION_DENIED) {
             requestPermissions(arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), 0)
+        }
+
+        fun navigateHeartRate() {
+            val intent = Intent(this, HeartRateActivity::class.java)
+            intent.putExtra("EMPLOYEEID",employeeID )
+            startActivity(intent)
         }
 
         setContent {
@@ -91,6 +102,7 @@ class OxymeterActivity : ComponentActivity() {
 @Composable
 fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02Level: Int, onNavigateHeartRate: () -> Unit) {
 
+    val isMeasuring = remember { mutableStateOf(false) }
 
     Column (
         modifier = Modifier
@@ -104,7 +116,7 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
         Text(text = "Oxygen Level",
             style = TextStyle(
                 fontFamily = Jura,
-                fontSize = 25.sp,
+                fontSize = 22.sp,
                 color = WatchTheme.colorScheme.primary
             ))
 
@@ -112,68 +124,97 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
         Text(text = "$sp02Level %",
              style = TextStyle(
                  fontFamily = Jura,
-                 fontSize = 40.sp,
+                 fontSize = 45.sp,
                  color = WatchTheme.colorScheme.primary
              ))
 
-
-        androidx.wear.compose.material.Button(
-            onClick = {
-                onStartTestClick()
-            },
-            modifier = Modifier
-                .padding(2.dp)
-                .fillMaxWidth(0.4f)
-                .height(30.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
-        ) {
-            Text(
-                "Measure",
-                style = TextStyle(
-                    fontFamily = Jura,
-                    fontSize = 15.sp,
-                    color = WatchTheme.colorScheme.primary
-                )
-            )
-        }
-
-        Row {
+        if (isMeasuring.value) {
             androidx.wear.compose.material.Button(
-                onClick = { onStopTestClick() },
+                onClick = { onStopTestClick()
+                            isMeasuring.value = false},
                 modifier = Modifier
                     .padding(2.dp)
-                    .fillMaxWidth(0.4f)
-                    .height(30.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
+                    .fillMaxWidth(0.5f)
+                    .height(35.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.primary)
             ) {
                 Text(
                     "Complete",
                     style = TextStyle(
                         fontFamily = Jura,
-                        fontSize = 15.sp,
-                        color = WatchTheme.colorScheme.primary
-                    )
-                )
-            }
-
-            androidx.wear.compose.material.Button(
-                onClick = { onNavigateHeartRate() },
-                modifier = Modifier
-                    .padding(2.dp)
-                    .fillMaxWidth(0.4f)
-                    .height(30.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.tertiary)
-            ) {
-                Text(
-                    "->",
-                    style = TextStyle(
-                        fontFamily = Jura,
-                        fontSize = 15.sp,
-                        color = WatchTheme.colorScheme.primary
+                        fontSize = 17.sp,
+                        color = WatchTheme.colorScheme.secondary
                     )
                 )
             }
         }
 
+        else {
+
+                androidx.wear.compose.material.Button(
+                    onClick = {
+                        onStartTestClick()
+                        isMeasuring.value = true
+                    },
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .fillMaxWidth(0.5f)
+                        .height(35.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
+                ) {
+
+                        Text(
+                            "Measure",
+                            style = TextStyle(
+                                fontFamily = Jura,
+                                fontSize = 17.sp,
+                                color = WatchTheme.colorScheme.primary
+                            )
+                        )
+
+
+
+
+
+                }
+
+
+
+        }
+
+            androidx.wear.compose.material.Button(
+                onClick = { onNavigateHeartRate() },
+                modifier = Modifier
+                    .padding(2.dp)
+                    .fillMaxWidth(0.5f)
+                    .height(35.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
+            ) {
+                Text(
+                    "Continue",
+                    style = TextStyle(
+                        fontFamily = Jura,
+                        fontSize = 17.sp,
+                        color = WatchTheme.colorScheme.primary
+                    )
+                )
+            }
+
+
     }
+}
+
+@Preview
+@Composable
+fun PreviewOxymeterView() {
+    // Mock data for preview
+    val mockSp02Level = 98 // Example SPO2 level
+
+    // Use the onStartTestClick and onStopTestClick as empty lambdas
+    OxymeterView(
+        onStartTestClick = {},
+        onStopTestClick = {},
+        sp02Level = mockSp02Level,
+        onNavigateHeartRate = {}
+    )
 }

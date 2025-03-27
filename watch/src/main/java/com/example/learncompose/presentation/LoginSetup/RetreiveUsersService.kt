@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 data class Employee(val fullName : String, val employeeID: String)
@@ -23,17 +24,18 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
 
     data class TestData (
             var sp02 : Int = 0,
-            var heartRate: List<Int> = emptyList()
+            var heartRate: List<Int> = listOf(0),
+            var totalTestTime: Long = 0
             )
 
     fun getCurrentTime(): String {
-        val currentDateTime = LocalDateTime.now()
+        val currentDateTime = LocalTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         return currentDateTime.format(formatter)
     }
 
     fun getUsers() {
-        myRef.addValueEventListener(object : ValueEventListener {
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -45,6 +47,15 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
                         employeeList.add(newEmployee)
                         Log.d("New User", "$username")
                         Log.d("New User ID: ", "$employeeID")
+
+                        if(postSnapshot.hasChild("tests")) {
+                            Log.d("User", "Returning User with Tests")
+                            }
+
+                        else {
+                            val testsRef = postSnapshot.ref.child("tests")
+                            testsRef.setValue("place_holder")
+                        }
                     }
                 }
                     employeeListState.value = employeeList
@@ -73,7 +84,7 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
                         // Generate a custom ID for the test
 
                         // Get the reference to the location where you want to store the new test
-                        val userTestRef = postSnapshot.ref.child(testId) // Use child(testId) on ref to set a custom ID
+                        val userTestRef = postSnapshot.ref.child("tests").child(testId) // Use child(testId) on ref to set a custom ID
 
                         // Store the new test data under the generated test ID
                         userTestRef.setValue(newTest).addOnCompleteListener { task ->

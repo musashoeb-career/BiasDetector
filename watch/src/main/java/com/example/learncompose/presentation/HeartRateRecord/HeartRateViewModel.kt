@@ -17,64 +17,43 @@ import kotlinx.coroutines.delay
 import java.io.File
 import java.io.IOException
 
-class VoiceRecorder(private val context: Application) {
-
-    private var mediaRecorder: MediaRecorder? = null
-    private var fileName: String = ""
-//
-//    fun startRecording() {
-//        mediaRecorder = new MediaReco
-//        mediaRecorder = MediaRecorder().apply {
-//            setAudioSource(MediaRecorder.AudioSource.MIC)
-//            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-//            setOutputFile(fileName)
-//            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-//
-//            try {
-//                prepare()
-//            } catch (e: IOException) {
-//               Log.d("Record Message", "Recorder Failed")
-//            }
-//
-//            start()
-//        }
-//    }
-
-    fun stopRecording() {
-        mediaRecorder?.apply {
-            stop()
-            release()
-        }
-        mediaRecorder = null
-    }
-}
-
 
 class HeartRateViewModel(application: Application) : AndroidViewModel(application) {
 
-    val voiceRecorder: VoiceRecorder = VoiceRecorder(application)
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        val myRef : DatabaseReference = database.getReference("users/names/heartrate")
-
-        fun ReadDatabase() {
-
-            // Read from the database
-            myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    // This method is called when data is retrieved from the database
-                    val value = dataSnapshot.getValue(String::class.java)
-                    Log.d("Firebase", "Value is: $value")
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // This method is called when the read operation is cancelled
-                    Log.w("Firebase", "Failed to read value.", databaseError.toException())
-                }
-            })
-        }
-
+        var myRef : DatabaseReference = database.getReference("")
+        var timeRef : DatabaseReference = database.getReference("")
         val healthConnect = SamsungHealthConnect(application)
         val heartRateListener = HeartRateListenerService()
+
+        var startTime : Long = 0;
+        var endTime: Long = 0;
+
+
+    fun updateReference( employeeID: String) {
+        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests")
+        myRef.orderByKey().limitToLast(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()) {
+                        // Get the last child (most recent node)
+                        val mostRecentNode = snapshot.children.last()
+                        Log.d("Most Recent Node:", "Node: $mostRecentNode")
+                        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests/${mostRecentNode.key}/heartRate")
+                        timeRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests/${mostRecentNode.key}/totalTestTime")
+                    } else {
+                        Log.d("Most Recent Node:", "No Node Found")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle error appropriately, e.g., log it or display a message
+                    Log.d("Error", "Error Retrieving Child Node")
+                }
+            })
+    }
+
+
 
 
         suspend fun startTest() {
@@ -85,7 +64,7 @@ class HeartRateViewModel(application: Application) : AndroidViewModel(applicatio
 
             delay(1000)
             if(healthConnect.isConnected) {
-
+                startTime = System.currentTimeMillis()
                 healthConnect.heartRateTracker.setEventListener(heartRateListener.heartRateListener)
 
             }
@@ -94,9 +73,12 @@ class HeartRateViewModel(application: Application) : AndroidViewModel(applicatio
         }
 
         fun stopTest() {
-            //voiceRecorder.stopRecording()
+
             val heartrateFinal = heartRateListener.heartRateData.value
-            myRef.setValue("Heart Rate Final:$heartrateFinal")
+            endTime = System.currentTimeMillis()
+            val elapsedTime = (endTime - startTime) / 1000
+            myRef.setValue(heartrateFinal)
+            timeRef.setValue(elapsedTime)
             healthConnect.heartRateTracker.unsetEventListener()
             healthConnect.disconnectHealthService()
         }
