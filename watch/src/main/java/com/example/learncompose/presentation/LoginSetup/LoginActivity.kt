@@ -1,4 +1,4 @@
-package com.example.learncompose.presentation
+package com.example.learncompose.presentation.LoginSetup
 
 import android.content.Intent
 import android.os.Bundle

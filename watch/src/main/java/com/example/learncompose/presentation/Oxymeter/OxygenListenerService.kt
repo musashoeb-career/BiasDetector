@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class OxygenListenerService {
 
-    private val _sp02Data = MutableStateFlow<Int>(0)
+    val _sp02Data = MutableStateFlow<Int>(0)
     val sp02Data = _sp02Data.asStateFlow()
 
     val sp02Listener = object : HealthTracker.TrackerEventListener {
@@ -22,8 +22,11 @@ class OxygenListenerService {
 
                 val incomingOxygenData = data.getValue((ValueKey.SpO2Set.SPO2))
                 if (incomingOxygenData != null) {
-                    _sp02Data.value = incomingOxygenData
                     Log.d("Sp02 Listener", "Data Received: $incomingOxygenData")
+                    if (incomingOxygenData > _sp02Data.value) {
+                        _sp02Data.value = incomingOxygenData
+                    }
+
                 }
 
                 else {
