@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels // Use this to inject the ViewModel
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -183,12 +184,16 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
         }
 
             androidx.wear.compose.material.Button(
-                onClick = { onNavigateHeartRate() },
+                enabled = !isMeasuring.value,
+                onClick = {onNavigateHeartRate() },
                 modifier = Modifier
                     .padding(2.dp)
                     .fillMaxWidth(0.5f)
-                    .height(35.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)
+                    .height(35.dp)
+                    ,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = WatchTheme.colorScheme.secondary.copy(alpha =
+                            if(isMeasuring.value) {.4f} else {1f}))
             ) {
                 Text(
                     "Continue",

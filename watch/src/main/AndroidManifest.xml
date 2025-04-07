@@ -31,7 +31,7 @@
             android:value="true" />
 
         <activity
-            android:name=".presentation.LoginSetup.SelectUserActivity"
+            android:name=".presentation.LoginSetup.StartingActivity"
             android:exported="true"
             android:taskAffinity=""
             android:theme="@style/MainActivityTheme.Starting">
@@ -43,6 +43,11 @@
         </activity>
 
         <activity android:name=".presentation.LoginSetup.LoginActivity"
+            android:taskAffinity="">
+            <!-- Add other necessary properties if needed -->
+        </activity>
+
+        <activity android:name=".presentation.LoginSetup.SelectUserActivity"
             android:taskAffinity="">
             <!-- Add other necessary properties if needed -->
         </activity>

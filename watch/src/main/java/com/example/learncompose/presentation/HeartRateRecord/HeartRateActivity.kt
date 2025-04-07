@@ -162,12 +162,15 @@ class HeartRateActivity : ComponentActivity() {
             }
 
             Button(
+                enabled = !isMeasuring.value,
                 onClick = {onNavigateSelectActivity()},
                 modifier = Modifier
                     .padding(3.dp)
                     .fillMaxWidth(0.5f)
                     .height(35.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = WatchTheme.colorScheme.secondary)) {
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = WatchTheme.colorScheme.secondary.copy(alpha =
+                    if(isMeasuring.value) {.4f} else {1f}))) {
                 Text(
                     text = "Finish Test",
                     style = TextStyle(

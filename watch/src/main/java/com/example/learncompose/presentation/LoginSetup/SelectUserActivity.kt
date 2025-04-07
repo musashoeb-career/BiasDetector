@@ -20,8 +20,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -113,16 +116,28 @@ fun DisplayUsers(mutableList: List<Employee>, onNavigateOxymeter: (String) -> Un
                 modifier = Modifier
                     .background(WatchTheme.colorScheme.background)
             ) { page ->
-                Text(
-                    text = mutableList[page].fullName,
-                    style = TextStyle(
-                        fontFamily = Jura,
-                        fontSize = 25.sp,
-                        color = WatchTheme.colorScheme.primary
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = "profile picture",
+                        tint = WatchTheme.colorScheme.onBackground,
+                        modifier = Modifier
+                            .size(60.dp))
+
+                    Text(
+                        text = mutableList[page].fullName,
+                        style = TextStyle(
+                            fontFamily = Jura,
+                            fontSize = 25.sp,
+                            color = WatchTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
             }
 
             Spacer(Modifier.height(10.dp))
