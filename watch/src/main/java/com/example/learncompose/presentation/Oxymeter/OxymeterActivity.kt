@@ -209,17 +209,3 @@ fun OxymeterView(onStartTestClick: () -> Unit, onStopTestClick: () -> Unit, sp02
     }
 }
 
-@Preview
-@Composable
-fun PreviewOxymeterView() {
-    // Mock data for preview
-    val mockSp02Level = 98 // Example SPO2 level
-
-    // Use the onStartTestClick and onStopTestClick as empty lambdas
-    OxymeterView(
-        onStartTestClick = {},
-        onStopTestClick = {},
-        sp02Level = mockSp02Level,
-        onNavigateHeartRate = {}
-    )
-}

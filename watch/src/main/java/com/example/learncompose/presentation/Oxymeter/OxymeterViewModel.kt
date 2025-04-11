@@ -66,6 +66,8 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
     fun stopTest() {
         val spo2Final = sp02Listener.sp02Data.value
         Log.d("Sp02 Final", "Data: $spo2Final")
+        Log.d("Oxygen Ref Pushed", "$myRef")
+
         myRef.setValue(spo2Final).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d("Oxymeter Push", "Successful Oxi Push")

@@ -54,10 +54,17 @@ class SelectUserActivity : ComponentActivity() {
 
         // Define the navigate function
         fun navigateOxymeter(currentUser: String) {
-            usersInstance.createUserTest(currentUser)
-            val intent = Intent(this, OxymeterActivity::class.java)
-            intent.putExtra("EMPLOYEEID", currentUser)
-            startActivity(intent)
+            usersInstance.createUserTest(currentUser) {success ->
+                if(success) {
+                    val intent = Intent(this, OxymeterActivity::class.java)
+                    intent.putExtra("EMPLOYEEID", currentUser)
+                    startActivity(intent)
+                }
+                else {
+                    Log.d("NavigateOxymeter", "Test creation failed. Cannot navigate.")
+                }
+            }
+
         }
 
         setContent {
