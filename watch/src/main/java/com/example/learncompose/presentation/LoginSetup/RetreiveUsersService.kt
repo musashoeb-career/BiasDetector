@@ -2,6 +2,7 @@ package com.example.learncompose.presentation.LoginSetup
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.appcompat.view.ActionMode.Callback
 import androidx.compose.runtime.MutableState
 import com.google.firebase.Timestamp
 import com.google.firebase.database.DataSnapshot
@@ -29,9 +30,15 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
             )
 
     fun getCurrentTime(): String {
-        val currentDateTime = LocalTime.now()
-        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        return currentDateTime.format(formatter)
+        val currentDateTime = LocalDateTime.now()
+
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+
+        val currentDate = currentDateTime.format(dateFormatter)
+        val currentTime = currentDateTime.format(timeFormatter)
+
+       return currentDate + currentTime
     }
 
     fun getUsers() {
@@ -68,7 +75,7 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
         })
     }
 
-    fun createUserTest(currentUser: String) {
+    fun createUserTest(currentUser: String, callback: (Boolean) -> Unit) {
 
         val testId : String = "Test_" + getCurrentTime()
 
@@ -89,8 +96,10 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
                         // Store the new test data under the generated test ID
                         userTestRef.setValue(newTest).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
+                                callback(true)
                                 Log.d("Success", "New Test Complete")
                             } else {
+                                callback(false)
                                 Log.d("Failure", "New Test Was not Pushed")
                             }
                         }
@@ -101,6 +110,7 @@ class RetreiveUsersService(private val employeeListState: MutableState<List<Empl
             }
 
             override fun onCancelled(error: DatabaseError) {
+                callback(false)
                 Log.d("Firebase Error", "$error")
             }
         })
