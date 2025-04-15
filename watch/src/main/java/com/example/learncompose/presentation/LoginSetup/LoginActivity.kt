@@ -38,8 +38,11 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class LoginActivity : ComponentActivity() {
 
+/*This file is not included within the xml file, so it won't appear on the app.
+* It works, but logging in on a watch is difficult*/
+
+class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

@@ -1,25 +1,13 @@
-package com.example.learncompose.presentation
+package com.example.learncompose.presentation.LoginSetup
 
-import android.Manifest
-import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.Text
 import com.samsung.android.service.health.tracking.ConnectionListener
 import com.samsung.android.service.health.tracking.HealthTracker
 import com.samsung.android.service.health.tracking.HealthTrackerException
 import com.samsung.android.service.health.tracking.HealthTrackingService
-import com.samsung.android.service.health.tracking.data.DataPoint
 import com.samsung.android.service.health.tracking.data.HealthTrackerType
-import com.samsung.android.service.health.tracking.data.ValueKey
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 /* In order to use services like heartRate and Spo2 without directly making calculations
 off the sensor, we connect to a health platform that will run those services for us. In this
