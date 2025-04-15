@@ -27,19 +27,22 @@ import com.example.learncompose.R
 import com.example.learncompose.presentation.theme.Jura
 import com.example.learncompose.presentation.theme.WatchTheme
 
+/* A simple landing page that navigates to the select user activity*/
+
 class StartingActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fun navigateSelectUser() {
+        fun navigateGetStarted() {
             val intent = Intent(this, SelectUserActivity::class.java)
             startActivity(intent)
         }
+
         setContent {
             WatchTheme {
                 GetStarted(
-                    onNavigateSelectUser = {
-                        navigateSelectUser()
+                    onNavigateGetStarted = {
+                        navigateGetStarted()
                     }
                 )
             }
@@ -48,14 +51,14 @@ class StartingActivity: ComponentActivity() {
 }
 
 @Composable
-fun GetStarted(onNavigateSelectUser: () -> Unit) {
+fun GetStarted(onNavigateGetStarted: () -> Unit) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()  // Make the Column fill the entire screen
+            .fillMaxSize()
             .background(WatchTheme.colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally, // Align children horizontally in the center
-        verticalArrangement = Arrangement.Center // Align children vertically in the center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
 
         Icon(
@@ -85,17 +88,8 @@ fun GetStarted(onNavigateSelectUser: () -> Unit) {
         )
 
 
-//        Text(
-//            text = "V 1.0.0.0",
-//            style = TextStyle(
-//                fontFamily = Jura,
-//                fontSize = 13.sp,
-//                color = WatchTheme.colorScheme.primary
-//            )
-//        )
-
         Button(
-            onClick = { onNavigateSelectUser() }, // Pass currentUser when the button is clicked
+            onClick = { onNavigateGetStarted() },
             modifier = Modifier.fillMaxWidth(0.65f),
             colors = ButtonDefaults.buttonColors(
                 disabledContainerColor = WatchTheme.colorScheme.onBackground,

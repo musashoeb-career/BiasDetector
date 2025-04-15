@@ -2,13 +2,8 @@ package com.example.learncompose.presentation.Oxymeter
 
 import android.app.Application
 import android.util.Log
-import androidx.collection.emptyIntList
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.learncompose.presentation.SamsungHealthConnect
+import com.example.learncompose.presentation.LoginSetup.SamsungHealthConnect
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -16,18 +11,24 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.delay
 
+
+/* Viewmodels act as a bridge between services classes and activity classes. You're collecting oxygen and heartrate
+* in service classes, and displaying UI in activity classes.*/
+
 class OxymeterViewModel(application: Application) : AndroidViewModel(application) {
 
     val database : FirebaseDatabase = FirebaseDatabase.getInstance()
     var myRef : DatabaseReference = database.getReference("")
-    val healthConnect = SamsungHealthConnect(application)
+    val healthConnect = SamsungHealthConnect(application)  //Create instances of the service classes we need
     val sp02Listener = OxygenListenerService()
 
 
 
+    /*This function is called when navigating to the oxymeter page. Based on the user you selected, a reference
+    * needs to be updated and a test needs to be created*/
 
     fun updateReference( employeeID: String) {
-        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests")
+        myRef = database.getReference("EHTS/EHTS2025/employees/$employeeID/tests") //based on the employee you selected
         myRef.orderByKey().limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -49,6 +50,7 @@ class OxymeterViewModel(application: Application) : AndroidViewModel(application
             })
     }
 
+    // these start and stop functions are what we give to UI, the "Measure" and "Complete" buttons
     suspend fun startTest() {
 
         sp02Listener._sp02Data.value = 0
