@@ -42,6 +42,24 @@ If one doesn't exist, add a new one as an "Android App" and set the module to Bi
 Note: If you interact with UI that measures health data, it is not going to work as you're using a
 simulator, you should get that popup message. To view  actual results, rely on the physical device.
 
+# Using the App
+
+1) You'll first be greeted by the `Landing Page`. Click on `Get Started` to continue to testing.
+
+2) You are now on the `Select User Page`. Swipe horizontally to navigate to the desired user, and click `Start Test`
+
+3) The next screen is the `Oxymeter Activity Page`. This measures the one-instance blood oxygen level of a user
+    * It is normal to have an oxymeter reading of 95-100. Something lower might indicate a medical issue
+    * To start measuring, click on `Measure`. Wait about 10 seconds for data to appear on the screen. 
+    * NOTE: Oxymeter is VERY finnicky. Ensure you are staying completely still and the watch is secured to your wrist
+    * NOTE: If no reading is happening, its better to just hit `Complete` and `Measure` again to restart the process
+    * Once a satisfactory reading is given, click on `Continue`
+
+4) The final screen is` Heart Rate Activity Page`. This measures heart rate continuously as long as you need (or until the battery dies)
+    * This works similar to oximeter, but is easier to work with. Once you're finished testing, click on `Finish Test`
+
+5) You'll be navigated back to the `Select User Page`. That's all there is to it :)
+
 # Future Improvements
 In full transparency, we realized about all the different directions this project
 could have taken a little too late. This project is limited by the hardware and features
