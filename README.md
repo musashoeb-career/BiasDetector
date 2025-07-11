@@ -9,6 +9,11 @@ collecting health data -Sp02 and heart rate-
 - Data Flow `(Firebase)`: Data from the watch is sent to `Firebase`, a backend platform
 - Build `(Gradle)`: `Gradle` is an automation tool that handles building your application
 
+<img width="539" height="539" alt="Image" src="https://github.com/user-attachments/assets/f36cbc42-176c-4d7e-983e-978c283db977" />
+
+<img width="539" height="539" alt="Image" src="https://github.com/user-attachments/assets/fa8ff80c-124d-4bbd-b90c-b5b75f536708" />
+
+<img width="539" height="539" alt="Image" src="https://github.com/user-attachments/assets/0b9a0db6-f990-4fd6-aefa-6c0f5e6d5c54" />
 
 # Launching the App
 
